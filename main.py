@@ -61,15 +61,29 @@ async def catalog_callback(callback: types.CallbackQuery):
     await callback.message.answer('Выберите курс для покупки', reply_markup=keyboard_curs)
 
 
-@dp.callback_query(F.data == 'about')
-async def about_me_callback(callback: types.CallbackQuery):
+@dp.callback_query(F.data == "about")
+async def about_callback(callback: types.CallbackQuery):
     """ Функция отображения информации о магазине """
     await callback.message.answer(
         'Магазин онлайн курсов по программированию, сдесь ты может приобрести курс или перейти на наш сайт.')
+    
+
+@dp.callback_query(F.data == "support")
+async def support_callback(callback: types.CallbackQuery):
+    """ Функция отображения информации о тех.поддержке """
+    kb3 = [
+        [
+            types.InlineKeyboardButton(text="Написать в VK", url="https://vk.com/id578574082")
+        ]
+    ]
+    keyboard_support = types.InlineKeyboardMarkup(inline_keyboard=kb3)
+    text = "Если у вас возникли вопросы по работе с магазином, обращайтесь в нашу техническую поддержку."
+    await callback.message.answer(text, reply_markup=keyboard_support)
 
 
 async def main():
     await dp.start_polling(bot)
+
 
 
 if __name__ == "__main__":
