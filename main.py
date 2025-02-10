@@ -1,7 +1,7 @@
 import asyncio
-from idlelib.undo import Command
-
 from aiogram import F, Bot, Dispatcher, types
+
+from aiogram.filters import Command
 
 from settings import TELEGRAM_TOKEN
 
@@ -13,9 +13,21 @@ dp = Dispatcher()
 @dp.message(Command("start"))
 async def start(message: types.Message):
     """ Функция для запуска проекта """
+    kbm = [
+        [
+            types.InlineKeyboardButton(text="Меню магазина", callback_data='menu')
+        ]
+    ]
+    keyboard_menu = types.InlineKeyboardMarkup(inline_keyboard=kbm)
+    await message.answer(f'Привет, {message.from_user.first_name}! Это онлайн магазин курсов по праграмированию', reply_markup=keyboard_menu)
+
+
+@dp.callback_query(F.data == "menu")
+async def menu_callback(callback: types.CallbackQuery):
+    """ Функция отображения меню магазина """
     kb = [
         [
-            types.InlineKeyboardButton(text="Каталгог", callback_data='catalog')
+            types.InlineKeyboardButton(text="Каталог", callback_data='catalog')
         ],
         [
             types.InlineKeyboardButton(text="Профиль", callback_data='profile'),
@@ -25,11 +37,11 @@ async def start(message: types.Message):
             types.InlineKeyboardButton(text="Тех.поддержка", callback_data='support')
         ]
     ]
-    keyboard = types.InlineKeyboardMarkup(inline_keyboard=kb)
-    await message.answer('Привет! Это онлайн магазина', reply_markup=keyboard)
+    keyboard_catalog = types.InlineKeyboardMarkup(inline_keyboard=kb)
+    await callback.message.answer('Меню магазина', reply_markup=keyboard_catalog)
 
 
-@dp.callback_query(F.data == 'catalog')
+@dp.callback_query(F.data == "catalog")
 async def catalog_callback(callback: types.CallbackQuery):
     """ Функция отображения каталога курсов """
     kb2 = [
@@ -40,6 +52,9 @@ async def catalog_callback(callback: types.CallbackQuery):
         [
             types.InlineKeyboardButton(text="Django", callback_data='django'),
             types.InlineKeyboardButton(text="Telebot", callback_data='telebot')
+        ],
+        [
+            types.InlineKeyboardButton(text="Вернуться в меню", callback_data="menu")
         ]
     ]
     keyboard_curs = types.InlineKeyboardMarkup(inline_keyboard=kb2)
