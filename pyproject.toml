@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "telegram-store"
+version = "0.1.0"
+description = ""
+authors = ["KarelinIvan <ivan.karelin.1993@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+aiogram = "^3.17.0"
+python-dotenv = "^1.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
