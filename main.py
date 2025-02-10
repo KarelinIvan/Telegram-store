@@ -64,8 +64,8 @@ async def catalog_callback(callback: types.CallbackQuery):
 @dp.callback_query(F.data == "about")
 async def about_callback(callback: types.CallbackQuery):
     """ Функция отображения информации о магазине """
-    await callback.message.answer(
-        'Магазин онлайн курсов по программированию, сдесь ты может приобрести курс или перейти на наш сайт.')
+    info_mag = "Магазин онлайн курсов по программированию, сдесь ты может приобрести курс или перейти на наш сайт."
+    await callback.message.answer(info_mag)
     
 
 @dp.callback_query(F.data == "support")
@@ -79,6 +79,21 @@ async def support_callback(callback: types.CallbackQuery):
     keyboard_support = types.InlineKeyboardMarkup(inline_keyboard=kb3)
     text = "Если у вас возникли вопросы по работе с магазином, обращайтесь в нашу техническую поддержку."
     await callback.message.answer(text, reply_markup=keyboard_support)
+
+
+@dp.callback_query(F.data == "profile")#+
+async def profile_callback(callback: types.CallbackQuery):
+    """ Функция отображения профиля пользователя """
+    kb4 = [
+        [
+            types.InlineKeyboardButton(text="Вернуться в меню", callback_data="menu")
+        ]
+    ]
+    keybord_profile = types.InlineKeyboardMarkup(inline_keyboard=kb4)
+    info = (f"Ваше имя:{callback.from_user.first_name}\n"
+            f"Ваш id:{callback.from_user.id}\n"
+            f"Ваш баланс: 0 руб.")
+    await callback.message.answer(info, reply_markup=keybord_profile)
 
 
 async def main():
